@@ -1,4 +1,4 @@
-module web_app
+module bluebell
 
 go 1.15
 
@@ -12,6 +12,6 @@ require (
 	github.com/onsi/ginkgo v1.15.2 // indirect
 	github.com/onsi/gomega v1.11.0 // indirect
 	github.com/spf13/viper v1.7.1
-	go.uber.org/zap v1.10.0
+	go.uber.org/zap v1.16.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 )

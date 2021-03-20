@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"bluebell/settings"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -8,7 +9,6 @@ import (
 	"runtime/debug"
 	"strings"
 	"time"
-	"web_app/settings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/natefinch/lumberjack"

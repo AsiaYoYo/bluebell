@@ -1,6 +1,11 @@
 package main
 
 import (
+	"bluebell/dao/mysql"
+	"bluebell/dao/redis"
+	"bluebell/logger"
+	"bluebell/routers"
+	"bluebell/settings"
 	"context"
 	"flag"
 	"fmt"
@@ -10,11 +15,6 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-	"web_app/dao/mysql"
-	"web_app/dao/redis"
-	"web_app/logger"
-	"web_app/routers"
-	"web_app/settings"
 
 	"go.uber.org/zap"
 )
