@@ -3,7 +3,6 @@ package controllers
 import (
 	"bluebell/logic"
 	"bluebell/models"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -31,9 +30,13 @@ func SignUpHandler(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println(p)
 	// 2.业务处理
-	logic.SignUp(p)
+	if err := logic.SignUp(p); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
 	// 3.返回响应
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "success",
