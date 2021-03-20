@@ -1,11 +1,13 @@
-name: "web_app"
+name: "bluebell"
 mode: "dev"
+start_time: "2021-03-01"
+machine_id: 1
 port: 8081
-version: "v0.1.3"
+version: "v0.1.4"
 
 log:
   level: "debug"
-  filename: "web_app.log"
+  filename: "bluebell.log"
   max_size: 200
   max_age: 30
   max_backups: 7
