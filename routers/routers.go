@@ -25,7 +25,10 @@ func Setup(mode string) *gin.Engine {
 		c.String(http.StatusOK, "ok")
 	})
 
+	// 注册业务路由
 	r.POST("/signup", controllers.SignUpHandler)
+	// 登录业务路由
+	r.POST("/login", controllers.LoginHandler)
 
 	r.GET("/version", func(c *gin.Context) {
 		c.String(http.StatusOK, settings.Conf.Version)
