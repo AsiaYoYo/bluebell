@@ -1,4 +1,5 @@
 name: "bluebell"
+# 生产环境可配置为"release"
 mode: "dev"
 start_time: "2021-03-01"
 machine_id: 1
