@@ -26,12 +26,13 @@ func Setup(mode string) *gin.Engine {
 		c.String(http.StatusOK, "ok")
 	})
 
+	v1 := r.Group("/api/v1")
 	// 注册业务路由
-	r.POST("/signup", controllers.SignUpHandler)
+	v1.POST("/signup", controllers.SignUpHandler)
 	// 登录业务路由
-	r.POST("/login", controllers.LoginHandler)
+	v1.POST("/login", controllers.LoginHandler)
 
-	r.GET("/version", middlewares.JWTAuthMiddleware(), func(c *gin.Context) {
+	v1.GET("/version", middlewares.JWTAuthMiddleware(), func(c *gin.Context) {
 		c.String(http.StatusOK, settings.Conf.Version)
 	})
 	return r

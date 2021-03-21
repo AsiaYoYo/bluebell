@@ -23,7 +23,7 @@ import (
 func main() {
 	// 0. 解析命令行参数
 	var config string
-	flag.StringVar(&config, "config", "config.yaml", "指定配置文件")
+	flag.StringVar(&config, "config", "conf/config.yaml", "指定配置文件")
 	//解析命令行参数
 	flag.Parse()
 	// 1. 加载配置
