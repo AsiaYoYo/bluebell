@@ -3,6 +3,7 @@ package routers
 import (
 	"bluebell/controllers"
 	"bluebell/logger"
+	"bluebell/middlewares"
 	"bluebell/settings"
 	"fmt"
 	"net/http"
@@ -30,7 +31,7 @@ func Setup(mode string) *gin.Engine {
 	// 登录业务路由
 	r.POST("/login", controllers.LoginHandler)
 
-	r.GET("/version", func(c *gin.Context) {
+	r.GET("/version", middlewares.JWTAuthMiddleware(), func(c *gin.Context) {
 		c.String(http.StatusOK, settings.Conf.Version)
 	})
 	return r
