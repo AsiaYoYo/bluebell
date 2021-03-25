@@ -43,6 +43,9 @@ func Setup(mode string) *gin.Engine {
 		// 获取community列表
 		v1.GET("/community/:id", controllers.CommunityDetailHandler)
 
+		// 创建帖子路由
+		v1.POST("/post", controllers.CreatePostHandler)
+
 		v1.GET("/version2", func(c *gin.Context) {
 			c.String(http.StatusOK, settings.Conf.Version)
 		})
