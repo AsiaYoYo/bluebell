@@ -23,6 +23,6 @@ require (
 	github.com/pelletier/go-toml v1.8.1 // indirect
 	github.com/spf13/viper v1.7.1
 	go.uber.org/zap v1.16.0
-	golang.org/x/sys v0.0.0-20210320140829-1e4c9ba3b0c4 // indirect
+	golang.org/x/sys v0.0.0-20210324051608-47abb6519492 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 )

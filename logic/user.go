@@ -26,16 +26,17 @@ func SignUp(p *models.ParamSignUp) (err error) {
 }
 
 // Login 用户登录逻辑处理
-func Login(p *models.ParamLogin) (token string, err error) {
+func Login(u *models.User) (userID int64, token string, err error) {
 	// 构造一个Login实例
 	user := &models.User{
-		Username: p.Username,
-		Password: p.Password,
+		Username: u.Username,
+		Password: u.Password,
 	}
 	// 1. 检查用户名和密码是否正确
 	if err := mysql.Login(user); err != nil {
-		return "", err
+		return 0, "", err
 	}
 	// 2. 生成JWT
-	return jwt.GenToken(user.UserID, user.Username)
+	token, err = jwt.GenToken(user.UserID, user.Username)
+	return user.UserID, token, err
 }

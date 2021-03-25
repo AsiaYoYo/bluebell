@@ -44,8 +44,8 @@ func SignUpHandler(c *gin.Context) {
 // LoginHandler 登录请求处理
 func LoginHandler(c *gin.Context) {
 	// 1. 获取参数和参数检验
-	var p = new(models.ParamLogin)
-	if err := c.ShouldBindJSON(p); err != nil {
+	var u = new(models.User)
+	if err := c.ShouldBindJSON(u); err != nil {
 		// 获取validator.ValidationErrors类型的errors
 		errs, ok := err.(validator.ValidationErrors)
 		if !ok {
@@ -58,9 +58,9 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 	// 2. 业务处理
-	token, err := logic.Login(p)
+	userID, aToken, err := logic.Login(u)
 	if err != nil {
-		zap.L().Error("Login failed", zap.String("username", p.Username), zap.Error(err))
+		zap.L().Error("Login failed", zap.String("username", u.Username), zap.Error(err))
 		if errors.Is(err, mysql.ErrorUserNotExist) {
 			ResponseError(c, CodeUserNotExist)
 			return
@@ -69,5 +69,11 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 	// 3. 返回响应
-	ResponseSuccess(c, token)
+	ResponseSuccess(c, gin.H{
+		"token":        aToken,
+		"accessToken":  aToken,
+		"refreshToken": aToken,
+		"userID":       userID,
+		"username":     u.Username,
+	})
 }

@@ -32,8 +32,21 @@ func Setup(mode string) *gin.Engine {
 	// 登录业务路由
 	v1.POST("/login", controllers.LoginHandler)
 
-	v1.GET("/version", middlewares.JWTAuthMiddleware(), func(c *gin.Context) {
+	v1.GET("/version", func(c *gin.Context) {
 		c.String(http.StatusOK, settings.Conf.Version)
 	})
+
+	v1.Use(middlewares.JWTAuthMiddleware())
+	{
+		// 获取community列表
+		v1.GET("/community", controllers.CommunityHandler)
+		// 获取community列表
+		v1.GET("/community/:id", controllers.CommunityDetailHandler)
+
+		v1.GET("/version2", func(c *gin.Context) {
+			c.String(http.StatusOK, settings.Conf.Version)
+		})
+	}
+
 	return r
 }
