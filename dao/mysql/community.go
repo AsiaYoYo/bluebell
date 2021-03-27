@@ -20,7 +20,7 @@ func GetCommunityList() (CommunityList []*models.Community, err error) {
 }
 
 // GetCommunityDetailByID 查询所有Community信息
-func GetCommunityDetailByID(id int) (CommunityDetail *models.CommunityDetail, err error) {
+func GetCommunityDetailByID(id int64) (CommunityDetail *models.CommunityDetail, err error) {
 	CommunityDetail = new(models.CommunityDetail)
 	sqlStr := `
 		select community_id,community_name,introduction,create_time 

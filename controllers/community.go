@@ -22,7 +22,7 @@ func CommunityHandler(c *gin.Context) {
 // CommunityDetailHandler 相关路由处理
 func CommunityDetailHandler(c *gin.Context) {
 	id := c.Param("id")
-	idInt, _ := strconv.Atoi(id)
+	idInt, _ := strconv.ParseInt(id, 10, 64)
 	data, err := logic.GetCommunityDetail(idInt)
 	if err != nil {
 		zap.L().Error("logic.GetCommunityDetail failed", zap.Error(err))

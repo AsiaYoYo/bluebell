@@ -12,7 +12,7 @@ func GetCommunityList() (CommunityList []*models.Community, err error) {
 }
 
 // GetCommunityDetail 处理获取单个community详情业务逻辑
-func GetCommunityDetail(idInt int) (CommunityDetail *models.CommunityDetail, err error) {
+func GetCommunityDetail(idInt int64) (CommunityDetail *models.CommunityDetail, err error) {
 	// 查数据库 查到所有community并返回
 	return mysql.GetCommunityDetailByID(idInt)
 }
