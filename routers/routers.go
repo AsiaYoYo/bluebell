@@ -49,6 +49,8 @@ func Setup(mode string) *gin.Engine {
 		v1.GET("/post/:id", controllers.GetPostDetailHandler)
 		// 获取帖子列表
 		v1.GET("/posts", controllers.GetPostListHandler)
+		// 获取帖子列表
+		v1.GET("/posts2", controllers.GetPostListHandler)
 
 		v1.GET("/version2", func(c *gin.Context) {
 			c.String(http.StatusOK, settings.Conf.Version)

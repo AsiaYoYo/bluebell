@@ -5,6 +5,7 @@ import (
 	"bluebell/logic"
 	"bluebell/models"
 	"errors"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -73,7 +74,7 @@ func LoginHandler(c *gin.Context) {
 		"token":        aToken,
 		"accessToken":  aToken,
 		"refreshToken": aToken,
-		"userID":       userID,
+		"userID":       fmt.Sprintf("%d", userID),
 		"username":     u.Username,
 	})
 }
