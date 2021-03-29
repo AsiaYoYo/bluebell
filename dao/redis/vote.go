@@ -32,16 +32,28 @@ const (
 
 var (
 	ErrorVoteTimeExpire = errors.New("投票时间已过")
+	ErrorVoteRepeated   = errors.New("不能重复投票")
 )
 
+// CreatePost 创建post时记录帖子原始分数
 func CreatePost(postID int64) error {
-	_, err := rdb.ZAdd(getRedisKey(KeyPostTimeZSet), redis.Z{
+	pipeline := rdb.TxPipeline()
+	// 帖子时间
+	pipeline.ZAdd(getRedisKey(KeyPostTimeZSet), redis.Z{
 		Score:  float64(time.Now().Unix()),
 		Member: postID,
-	}).Result()
+	})
+	// 帖子分数
+	pipeline.ZAdd(getRedisKey(KeyPostScoreZSet), redis.Z{
+		Score:  float64(time.Now().Unix()),
+		Member: postID,
+	})
+	// 事务，一起执行
+	_, err := pipeline.Exec()
 	return err
 }
 
+// VoteForPost 对帖子进行投票操作存入redis
 func VoteForPost(userID, postID string, value float64) error {
 	// 1. 判断投票的限制
 	// 去redis取帖子发布的时间
@@ -52,6 +64,9 @@ func VoteForPost(userID, postID string, value float64) error {
 	// 2. 更新分数
 	// 先查当前用户给当前帖子的投票记录
 	ov := rdb.ZScore(getRedisKey(keyPostVotedZSetPrefix+postID), userID).Val()
+	if value == ov {
+		return ErrorVoteRepeated
+	}
 	var op float64
 	if value > ov {
 		op = 1
@@ -59,18 +74,17 @@ func VoteForPost(userID, postID string, value float64) error {
 		op = -1
 	}
 	diff := math.Abs(ov - value) // 计算两次投票的差值
-	_, err := rdb.ZIncrBy(getRedisKey(KeyPostScoreZSet), op*diff*scorePerVote, postID).Result()
-	if err != nil {
-		return err
-	}
+	pipeline := rdb.TxPipeline()
+	pipeline.ZIncrBy(getRedisKey(KeyPostScoreZSet), op*diff*scorePerVote, postID)
 	// 3. 记录用户为该帖子投票的数据
 	if value == 0 {
-		_, err = rdb.ZRem(getRedisKey(keyPostVotedZSetPrefix+postID), userID).Result()
+		pipeline.ZRem(getRedisKey(keyPostVotedZSetPrefix+postID), userID)
 	} else {
-		_, err = rdb.ZAdd(getRedisKey(keyPostVotedZSetPrefix+postID), redis.Z{
+		pipeline.ZAdd(getRedisKey(keyPostVotedZSetPrefix+postID), redis.Z{
 			Score:  value, // 赞成票还是反对票
 			Member: userID,
-		}).Result()
+		})
 	}
+	_, err := pipeline.Exec()
 	return err
 }

@@ -79,3 +79,28 @@ func GetPostListHandler(c *gin.Context) {
 	// 2. 返回响应
 	ResponseSuccess(c, data)
 }
+
+// 根据创建时间排序 或者 按照分数排序
+// GetPostListHandler2 处理根据path中的query参数获取帖子列表的请求
+func GetPostListHandler2(c *gin.Context) {
+	// 1.GET请求参数
+	p := &models.ParamPostList{
+		Page:  1,
+		Size:  10,
+		Order: models.OrderTime,
+	}
+	if err := c.ShouldBindQuery(p); err != nil {
+		zap.L().Error("GetPostListHandler2 with invaild param", zap.Error(err))
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+	// 1. 业务处理
+	data, err := logic.GetPostList2(p)
+	if err != nil {
+		zap.L().Error("logic.GetPostList2 failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	// 2. 返回响应
+	ResponseSuccess(c, data)
+}

@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Post struct {
-	ID          int64     `json:"post_id,string" db:"post_id"`
+	ID          int64     `json:"id,string" db:"post_id"`
 	AuthorID    int64     `json:"author_id,string" db:"author_id"`
 	CommunityID int64     `json:"community_id" db:"community_id" binding:"required"`
 	Status      int32     `json:"status" db:"status"`
@@ -15,6 +15,7 @@ type Post struct {
 // APIPostDetail 定义帖子详情结构体
 type APIPostDetail struct {
 	AuthorName string `json:"author_name"`
+	VoteNum    int64  `json:"vote_num"`
 	*Post
 	*CommunityDetail `json:"community"`
 }
