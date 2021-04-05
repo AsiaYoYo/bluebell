@@ -10,7 +10,17 @@ import (
 	"go.uber.org/zap"
 )
 
-// CreatePostHandler 处理创建post请求
+// CreatePostHandler 处理创建post请求接口
+// @Summary 创建帖子接口
+// @Description 创建帖子接口
+// @Tags 帖子相关接口
+// @Accept multipart/form-data
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object formData models.Post false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /post [post]
 func CreatePostHandler(c *gin.Context) {
 	// 1. 获取参数
 	var p = new(models.Post)
@@ -19,6 +29,7 @@ func CreatePostHandler(c *gin.Context) {
 		errs, ok := err.(validator.ValidationErrors)
 		if !ok {
 			// 非validator.ValidationErrors类型错误直接返回
+			zap.L().Error("create post with invalid param", zap.Error(err))
 			ResponseError(c, CodeInvalidParam)
 			return
 		}
@@ -44,7 +55,17 @@ func CreatePostHandler(c *gin.Context) {
 	ResponseSuccess(c, nil)
 }
 
-// GetPostDetailHandler 处理获取帖子详情请求
+// GetPostDetailHandler 处理获取帖子详情接口
+// @Summary 获取帖子详情接口
+// @Description 根据帖子id查询帖子详情接口
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param id path string true "帖子id"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /post/{id} [get]
 func GetPostDetailHandler(c *gin.Context) {
 	// 1. 从路径中获取参数
 	pidStr := c.Param("id")
@@ -80,8 +101,17 @@ func GetPostListHandler(c *gin.Context) {
 	ResponseSuccess(c, data)
 }
 
-// 根据创建时间排序 或者 按照分数排序
-// GetPostListHandler2 处理根据path中的query参数获取帖子列表的请求
+// GetPostListHandler2 升级版帖子列表接口
+// @Summary 升级版帖子列表接口
+// @Description 可按社区按时间或分数排序查询帖子列表接口
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object query models.ParamPostList false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /posts2 [get]
 func GetPostListHandler2(c *gin.Context) {
 	// 1.GET请求参数
 	p := &models.ParamPostList{

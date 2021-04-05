@@ -8,6 +8,11 @@ import (
 	"fmt"
 	"net/http"
 
+	_ "bluebell/docs"
+
+	gs "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -36,6 +41,8 @@ func Setup(mode string) *gin.Engine {
 		c.String(http.StatusOK, settings.Conf.Version)
 	})
 
+	r.GET("/swagger/*any", gs.WrapHandler(swaggerFiles.Handler))
+
 	v1.Use(middlewares.JWTAuthMiddleware())
 	{
 		// 获取community列表
@@ -52,7 +59,7 @@ func Setup(mode string) *gin.Engine {
 		// 根据path中的query参数获取帖子列表
 		v1.GET("/posts2", controllers.GetPostListHandler2)
 
-		// 获取帖子列表
+		// 为帖子投票
 		v1.POST("/vote", controllers.PostVoteHandler)
 	}
 

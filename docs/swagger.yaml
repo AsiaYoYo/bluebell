@@ -1,0 +1,176 @@
+basePath: /api/v1
+definitions:
+  controllers._ResponsePostList:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        description: 数据
+        items:
+          $ref: '#/definitions/models.APIPostDetail'
+        type: array
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  models.APIPostDetail:
+    properties:
+      author_id:
+        example: "0"
+        type: string
+      author_name:
+        type: string
+      community_id:
+        type: integer
+      content:
+        type: string
+      create_time:
+        type: string
+      id:
+        type: integer
+      introduction:
+        type: string
+      name:
+        type: string
+      status:
+        type: integer
+      title:
+        type: string
+      vote_num:
+        type: integer
+    required:
+    - community_id
+    - content
+    - title
+    type: object
+host: 127.0.0.1:8081
+info:
+  contact:
+    email: asiayoyo@outlook.com
+    name: 闫亚洲
+    url: http://www.swagger.io/support
+  description: 这是一个论坛
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: bluebell项目接口文档
+  version: "1.0"
+paths:
+  /post:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 创建帖子接口
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - example: "0"
+        in: formData
+        name: author_id
+        type: string
+      - in: formData
+        name: community_id
+        required: true
+        type: integer
+      - in: formData
+        name: content
+        required: true
+        type: string
+      - in: formData
+        name: create_time
+        type: string
+      - example: "0"
+        in: formData
+        name: id
+        type: string
+      - in: formData
+        name: status
+        type: integer
+      - in: formData
+        name: title
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponsePostList'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建帖子接口
+      tags:
+      - 帖子相关接口
+  /post/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据帖子id查询帖子详情接口
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponsePostList'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取帖子详情接口
+      tags:
+      - 帖子相关接口
+  /posts2:
+    get:
+      consumes:
+      - application/json
+      description: 可按社区按时间或分数排序查询帖子列表接口
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 安排什么排序
+        example: score
+        in: query
+        name: order
+        type: string
+      - description: 页码
+        example: 1
+        in: query
+        name: page
+        type: integer
+      - description: 每页数据量
+        example: 10
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponsePostList'
+      security:
+      - ApiKeyAuth: []
+      summary: 升级版帖子列表接口
+      tags:
+      - 帖子相关接口
+swagger: "2.0"

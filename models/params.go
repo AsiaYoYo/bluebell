@@ -23,7 +23,7 @@ type ParamVoteData struct {
 }
 
 type ParamPostList struct {
-	Page  int64  `json:"page" form:"page"`
-	Size  int64  `json:"size" form:"size"`
-	Order string `json:"order" form:"order"`
+	Page  int64  `json:"page" form:"page" example:"1"`       // 页码
+	Size  int64  `json:"size" form:"size" example:"10"`      // 每页数据量
+	Order string `json:"order" form:"order" example:"score"` // 安排什么排序
 }

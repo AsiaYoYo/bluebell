@@ -20,6 +20,20 @@ import (
 	"go.uber.org/zap"
 )
 
+// @title bluebell项目接口文档
+// @version 1.0
+// @description 这是一个论坛
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name 闫亚洲
+// @contact.url http://www.swagger.io/support
+// @contact.email asiayoyo@outlook.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host 127.0.0.1:8081
+// @BasePath /api/v1
 func main() {
 	// 0. 解析命令行参数
 	var config string
