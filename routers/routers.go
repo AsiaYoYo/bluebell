@@ -41,6 +41,11 @@ func Setup(mode string) *gin.Engine {
 		c.String(http.StatusOK, settings.Conf.Version)
 	})
 
+	// 根据path中的query参数获取帖子列表
+	v1.GET("/posts2", controllers.GetPostListHandler2)
+	// 获取单个帖子详情
+	v1.GET("/post/:id", controllers.GetPostDetailHandler)
+
 	r.GET("/swagger/*any", gs.WrapHandler(swaggerFiles.Handler))
 
 	v1.Use(middlewares.JWTAuthMiddleware())
@@ -52,12 +57,8 @@ func Setup(mode string) *gin.Engine {
 
 		// 创建帖子路由
 		v1.POST("/post", controllers.CreatePostHandler)
-		// 获取单个帖子详情
-		v1.GET("/post/:id", controllers.GetPostDetailHandler)
 		// 获取帖子列表
 		v1.GET("/posts", controllers.GetPostListHandler)
-		// 根据path中的query参数获取帖子列表
-		v1.GET("/posts2", controllers.GetPostListHandler2)
 
 		// 为帖子投票
 		v1.POST("/vote", controllers.PostVoteHandler)
