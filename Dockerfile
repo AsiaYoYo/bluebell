@@ -32,4 +32,4 @@ COPY ./conf /conf
 COPY --from=builder /build/bluebell /
 
 # 需要运行的命令
-ENTRYPOINT ["/bluebell", "conf/config.ini"]
+ENTRYPOINT ["/bluebell", "conf/config.yaml"]
